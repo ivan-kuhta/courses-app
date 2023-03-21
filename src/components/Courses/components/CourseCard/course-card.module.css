@@ -1,0 +1,46 @@
+.container {
+  border: 1px solid green;
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+
+.container p {
+  margin: 0;
+}
+
+.title {
+  font-size: 32px;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.overflow {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.content,
+.info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.content {
+  flex: 1 0 calc(65% - 20px);
+  min-width: 250px;
+}
+
+.info {
+  flex: 1 0 35%;
+  min-width: 200px;
+  gap: 20px;
+}
+
+.btn {
+  margin: 0 auto;
+}

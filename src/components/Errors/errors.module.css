@@ -1,0 +1,7 @@
+.list {
+  border: 1px solid red;
+  background-color: rgb(252, 203, 203);
+  color: red;
+  padding: 10px 10px 10px 30px;
+  border-radius: 5px;
+}

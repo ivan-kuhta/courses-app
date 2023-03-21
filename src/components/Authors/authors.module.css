@@ -1,0 +1,21 @@
+.flex {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  width: 100%;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1 1 calc(50% - 20px);
+}
+
+.author {
+  align-items: center;
+}
+
+.center {
+  text-align: center;
+}

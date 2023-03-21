@@ -1,0 +1,27 @@
+.label {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+}
+
+.input {
+  border: 1px solid orange;
+  height: 100%;
+  padding: 0.5em;
+  color: black;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: inherit;
+}
+
+.input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.input::-webkit-outer-spin-button,
+.input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
