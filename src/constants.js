@@ -1,5 +1,7 @@
 export const TEXT_LOGOUT = 'Logout';
 
+export const TEXT_CANCEL = 'Cancel';
+
 export const TEXT_CREATE_COURSE = 'Create course';
 
 export const TEXT_CREATE_AUTHOR = 'Create author';

@@ -7,6 +7,7 @@ import Errors from '../Errors/Errors';
 import Authors from '../Authors/Authors';
 import {
 	TEXT_ADD_AUTHOR,
+	TEXT_CANCEL,
 	TEXT_CREATE_AUTHOR,
 	TEXT_CREATE_COURSE,
 	TEXT_REMOVE_AUTHOR,
@@ -73,6 +74,11 @@ const CreateCourse = ({ handleBack }) => {
 					onChange={({ target: { value } }) => setTitle(value)}
 				/>
 				<Button text={TEXT_CREATE_COURSE} onClick={handlerCreateCourse} />
+				<Button
+					text={TEXT_CANCEL}
+					theme='danger'
+					onClick={() => handleBack()}
+				/>
 			</header>
 			<Textarea
 				name='description'
