@@ -23,12 +23,10 @@ const CreateCourse = ({ handleBack }) => {
 
 	const [errors, setErrors] = useState(null);
 	const [author, setAuthor] = useState('');
-	const [course, setCourse] = useState({
-		title: '',
-		description: '',
-		duration: null,
-		authors: [],
-	});
+	const [title, setTitle] = useState('');
+	const [description, setDescription] = useState('');
+	const [duration, setDuration] = useState(0);
+	const [authorIds, setAuthorIds] = useState([]);
 
 	const handleCreateAuthor = () => {
 		try {
@@ -40,31 +38,22 @@ const CreateCourse = ({ handleBack }) => {
 		}
 	};
 
-	const handleChangeCourse = ({ target: { type, value, name } }) => {
-		setCourse({
-			...course,
-			[name]: type === 'number' ? Number(value) : value,
-		});
-	};
-
 	const handleRemoveAuthor = (id) => {
-		setCourse({
-			...course,
-			authors: course.authors.filter((authorId) => authorId !== id),
-		});
+		setAuthorIds(authorIds.filter((authorId) => authorId !== id));
 	};
 
 	const handleAddAuthor = (id) => {
-		setCourse({
-			...course,
-			authors: [...course.authors, id],
-		});
+		setAuthorIds([...authorIds, id]);
 	};
 
 	const handlerCreateCourse = () => {
 		try {
-			createCourse(course);
-			setErrors(null);
+			createCourse({
+				title,
+				description,
+				duration: Number(duration),
+				authors: authorIds,
+			});
 			handleBack();
 		} catch (errors) {
 			setErrors(errors);
@@ -77,20 +66,20 @@ const CreateCourse = ({ handleBack }) => {
 			<header className={styles.header}>
 				<Input
 					name='title'
-					value={course.title}
+					value={title}
 					className={styles['input-title']}
 					labelText={'Title'}
 					placeholdetText={'Enter title...'}
-					onChange={handleChangeCourse}
+					onChange={({ target: { value } }) => setTitle(value)}
 				/>
 				<Button text={TEXT_CREATE_COURSE} onClick={handlerCreateCourse} />
 			</header>
 			<Textarea
 				name='description'
-				value={course.description}
+				value={description}
 				labelText={'Description'}
 				placeholdetText={'Enter description'}
-				onChange={handleChangeCourse}
+				onChange={({ target: { value } }) => setDescription(value)}
 			/>
 			<div className={`${styles.flex} ${styles['info-fields']}`}>
 				<div className={styles.column}>
@@ -99,7 +88,7 @@ const CreateCourse = ({ handleBack }) => {
 						value={author}
 						labelText={'Author name'}
 						placeholdetText={'Enter author name...'}
-						onChange={(e) => setAuthor(e.target.value)}
+						onChange={({ target: { value } }) => setAuthor(value)}
 					/>
 					<Button
 						className={styles.center}
@@ -111,7 +100,7 @@ const CreateCourse = ({ handleBack }) => {
 					<h3 className={styles.title}>Authors</h3>
 					<Authors
 						textButton={TEXT_ADD_AUTHOR}
-						authorIds={course.authors}
+						authorIds={authorIds}
 						isMatched={false}
 						handleAuthor={handleAddAuthor}
 					/>
@@ -122,16 +111,14 @@ const CreateCourse = ({ handleBack }) => {
 						type='number'
 						name='duration'
 						labelText={'Duration'}
-						value={course.duration}
+						value={duration}
 						placeholdetText={'Enter duration in minutes...'}
-						onChange={handleChangeCourse}
+						onChange={({ target: { value } }) => setDuration(value)}
 						min={0}
 					/>
 					<p>
 						Duration:{' '}
-						<span className={styles.duration}>
-							{pipeDuration(course.duration)}
-						</span>{' '}
+						<span className={styles.duration}>{pipeDuration(duration)}</span>{' '}
 						hours
 					</p>
 				</div>
@@ -139,7 +126,7 @@ const CreateCourse = ({ handleBack }) => {
 					<h3 className={styles.title}>Course authors</h3>
 					<Authors
 						textButton={TEXT_REMOVE_AUTHOR}
-						authorIds={course.authors}
+						authorIds={authorIds}
 						handleAuthor={handleRemoveAuthor}
 					/>
 				</div>
