@@ -9,8 +9,7 @@ import styles from './search-bar.module.css';
 const SearchBar = ({ handleSearch }) => {
 	const [query, setQuery] = useState('');
 
-	const handleChangeQuery = (e) => {
-		const value = e.target.value;
+	const handleChangeQuery = ({ target: { value } }) => {
 		setQuery(value);
 		if (value === '' && handleSearch) handleSearch('');
 	};

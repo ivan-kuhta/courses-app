@@ -40,12 +40,10 @@ const CreateCourse = ({ handleBack }) => {
 		}
 	};
 
-	const handleChangeCourse = (e) => {
-		const target = e.target;
+	const handleChangeCourse = ({ target: { type, value, name } }) => {
 		setCourse({
 			...course,
-			[target.name]:
-				target.type === 'number' ? Number(target.value) : target.value,
+			[name]: type === 'number' ? Number(value) : value,
 		});
 	};
 
