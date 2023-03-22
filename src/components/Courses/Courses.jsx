@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import Button from '../../common/Button/Button';
 import CreateCourse from '../CreateCourse/CreateCourse';
@@ -9,12 +9,12 @@ import { TEXT_ADD_NEW_COURSE } from '../../constants';
 import { dateGeneratop } from '../../helpers/dateGeneratop';
 import { pipeDuration } from '../../helpers/pipeDuration';
 
-import courseService from '../../services/course.service';
+import { DataContext } from '../../contexts/DataContext';
 
 import styles from './courses.module.css';
 
 const Courses = () => {
-	const { getFilterCourses } = courseService;
+	const { getFilterCourses } = useContext(DataContext);
 
 	const [query, setQuery] = useState('');
 

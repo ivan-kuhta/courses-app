@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import Button from '../../common/Button/Button';
 import Input from '../../common/__Input/Input';
@@ -12,14 +12,15 @@ import {
 	TEXT_REMOVE_AUTHOR,
 } from '../../constants';
 
-import { pipeDuration } from '../../helpers/pipeDuration';
+import { DataContext } from '../../contexts/DataContext';
 
-import courseService from '../../services/course.service';
+import { pipeDuration } from '../../helpers/pipeDuration';
 
 import styles from './create-course.module.css';
 
 const CreateCourse = ({ handleBack }) => {
-	const { addCourse, addAuthor } = courseService;
+	const { createCourse, createAuthor } = useContext(DataContext);
+
 	const [errors, setErrors] = useState(null);
 	const [author, setAuthor] = useState('');
 	const [course, setCourse] = useState({
@@ -30,8 +31,13 @@ const CreateCourse = ({ handleBack }) => {
 	});
 
 	const handleCreateAuthor = () => {
-		addAuthor({ name: author });
-		setAuthor('');
+		try {
+			createAuthor({ name: author });
+			setAuthor('');
+			setErrors(null);
+		} catch (errors) {
+			setErrors(errors);
+		}
 	};
 
 	const handleChangeCourse = (e) => {
@@ -59,7 +65,8 @@ const CreateCourse = ({ handleBack }) => {
 
 	const handlerCreateCourse = () => {
 		try {
-			addCourse(course);
+			createCourse(course);
+			setErrors(null);
 			handleBack();
 		} catch (errors) {
 			setErrors(errors);

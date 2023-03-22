@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import Button from '../../common/Button/Button';
 import { TEXT_AUTHORS_LIST_EMPTY } from '../../constants';
-
-import courseService from '../../services/course.service';
+import { DataContext } from '../../contexts/DataContext';
 
 import styles from './authors.module.css';
 
@@ -14,7 +13,7 @@ const Authors = ({
 	isMatched = true,
 	isReturnText = false,
 }) => {
-	const { getAuthors } = courseService;
+	const { getAuthors } = useContext(DataContext);
 
 	const authors = getAuthors(authorIds, isMatched);
 
