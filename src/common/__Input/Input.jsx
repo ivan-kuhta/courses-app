@@ -19,10 +19,10 @@ const Input = ({
 		<label className={labelClassNames}>
 			{labelText}
 			<input
+				value={value}
 				type={type}
 				name={name}
 				onChange={(e) => onChange(e)}
-				defaultValue={value}
 				className={styles.input}
 				placeholder={placeholdetText}
 				min={min}
