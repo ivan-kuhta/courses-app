@@ -14,7 +14,7 @@ import { DataContext } from '../../contexts/DataContext';
 import styles from './courses.module.css';
 
 const Courses = () => {
-	const { getFilterCourses } = useContext(DataContext);
+	const { getFilterCourses, getAuthorsName } = useContext(DataContext);
 
 	const [query, setQuery] = useState('');
 
@@ -31,14 +31,17 @@ const Courses = () => {
 						<Button text={TEXT_ADD_NEW_COURSE} onClick={() => setShow(true)} />
 					</header>
 					<div className={styles.list}>
-						{getFilterCourses(query).map((course) => (
-							<CourseCard
-								key={course.id}
-								{...course}
-								duration={pipeDuration(course.duration) + ' hours'}
-								creationDate={dateGeneratop(course.creationDate)}
-							/>
-						))}
+						{getFilterCourses(query).map(
+							({ id, authors, duration, creationDate, ...course }) => (
+								<CourseCard
+									key={id}
+									{...course}
+									authors={getAuthorsName(authors)}
+									duration={pipeDuration(duration) + ' hours'}
+									creationDate={dateGeneratop(creationDate)}
+								/>
+							)
+						)}
 					</div>
 				</>
 			)}

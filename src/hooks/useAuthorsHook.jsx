@@ -33,10 +33,17 @@ const useAuthorsHook = () => {
 		);
 	};
 
+	const getAuthorsName = (authorIds) => {
+		return getAuthors(authorIds)
+			.map(({ name }) => name)
+			.join(', ');
+	};
+
 	return {
 		authors: mockedAuthorsList,
 		createAuthor,
 		getAuthors,
+		getAuthorsName,
 	};
 };
 

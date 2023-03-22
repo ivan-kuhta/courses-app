@@ -11,13 +11,10 @@ const Authors = ({
 	handleAuthor,
 	textButton,
 	isMatched = true,
-	isReturnText = false,
 }) => {
 	const { getAuthors } = useContext(DataContext);
 
 	const authors = getAuthors(authorIds, isMatched);
-
-	if (isReturnText) return authors.map(({ id, name }) => name).join(', ');
 
 	if (authors.length === 0)
 		return <p className={styles.center}>{TEXT_AUTHORS_LIST_EMPTY}</p>;

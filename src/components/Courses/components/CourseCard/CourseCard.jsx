@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Button from '../../../../common/Button/Button';
-import Authors from '../../../Authors/Authors';
+
 import { TEXT_SHOW_COURSE } from '../../../../constants';
 
 import { transformDate } from '../../../../helpers/transformDate';
@@ -23,7 +23,7 @@ const CourseCard = ({
 			</div>
 			<div className={styles.info}>
 				<p className={styles.overflow}>
-					<b>Authors:</b> <Authors authorIds={authors} isReturnText />
+					<b>Authors:</b> {authors}
 				</p>
 				<p>
 					<b>Duration:</b> {duration}
