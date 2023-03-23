@@ -1,8 +1,13 @@
-import { mockedCoursesList } from '../constants';
-import { dateGeneratop } from '../helpers/dateGeneratop';
+import { useState } from 'react';
+
 import { v4 as uuid } from 'uuid';
+import { mockedCoursesList } from '../constants';
+
+import { dateGeneratop } from '../helpers/dateGeneratop';
 
 const useCoursesHook = () => {
+	const [courses, setCourses] = useState(mockedCoursesList);
+
 	const validationCourse = (course) => {
 		const errors = [];
 		if (course.description.length < 2) {
@@ -24,20 +29,19 @@ const useCoursesHook = () => {
 				createDate: dateGeneratop(),
 			};
 
-			mockedCoursesList.push(data);
+			setCourses([...courses, data]);
 		}
 	};
 
-	const getFilterCourses = (query) => {
-		return mockedCoursesList.filter(
+	const getFilterCourses = (query) =>
+		courses.filter(
 			(course) =>
 				course.id.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
 				course.title.toLowerCase().indexOf(query.toLowerCase()) !== -1
 		);
-	};
 
 	return {
-		courses: mockedCoursesList,
+		courses,
 		createCourse,
 		getFilterCourses,
 	};

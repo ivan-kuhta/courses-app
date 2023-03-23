@@ -1,8 +1,10 @@
-import { mockedAuthorsList } from '../constants';
+import { useState } from 'react';
+
 import { v4 as uuid } from 'uuid';
+import { mockedAuthorsList } from '../constants';
 
 const useAuthorsHook = () => {
-	// const [authors, setAuthors] = useState(mockedAuthorsList);
+	const [authors, setAuthors] = useState(mockedAuthorsList);
 
 	const validationAuthor = (author) => {
 		const errors = [];
@@ -23,24 +25,20 @@ const useAuthorsHook = () => {
 				...author,
 			};
 
-			mockedAuthorsList.push(data);
+			setAuthors([...authors, data]);
 		}
 	};
 
-	const getAuthors = (authorIds, selected = true) => {
-		return mockedAuthorsList.filter(
-			(author) => authorIds.includes(author.id) === selected
-		);
-	};
+	const getAuthors = (authorIds, selected = true) =>
+		authors.filter((author) => authorIds.includes(author.id) === selected);
 
-	const getAuthorsName = (authorIds) => {
-		return getAuthors(authorIds)
+	const getAuthorsName = (authorIds) =>
+		getAuthors(authorIds)
 			.map(({ name }) => name)
 			.join(', ');
-	};
 
 	return {
-		authors: mockedAuthorsList,
+		authors,
 		createAuthor,
 		getAuthors,
 		getAuthorsName,
