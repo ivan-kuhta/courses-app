@@ -1,0 +1,48 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+}
+
+.input-title {
+  max-width: 300px;
+  margin-right: auto;
+}
+
+.info-fields {
+  border: 1px solid black;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.info-fields p {
+  margin: 0;
+}
+
+.flex {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  width: 100%;
+}
+
+.title {
+  text-align: center;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1 1 calc(50% - 20px);
+}
+
+.duration {
+  font-size: 2em;
+  font-weight: 500;
+}
+
+.center {
+  margin: 0 auto;
+}

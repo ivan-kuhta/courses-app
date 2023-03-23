@@ -1,0 +1,5 @@
+.image {
+  height: 40px;
+  display: inline-block;
+  object-fit: contain;
+}
