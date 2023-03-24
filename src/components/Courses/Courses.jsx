@@ -36,6 +36,7 @@ const Courses = () => {
 								<CourseCard
 									key={id}
 									{...course}
+									id={id}
 									authors={getAuthorsName(authors)}
 									duration={pipeDuration(duration) + ' hours'}
 									creationDate={dateGeneratop(creationDate)}

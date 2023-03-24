@@ -40,10 +40,13 @@ const useCoursesHook = () => {
 				course.title.toLowerCase().indexOf(query.toLowerCase()) !== -1
 		);
 
+	const getCourse = (id) => courses.find((course) => course.id === id);
+
 	return {
 		courses,
 		createCourse,
 		getFilterCourses,
+		getCourse,
 	};
 };
 

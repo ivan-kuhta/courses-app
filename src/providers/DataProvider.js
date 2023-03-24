@@ -6,7 +6,8 @@ import useCoursesHook from '../hooks/useCoursesHook';
 export const Provider = ({ children }) => {
 	const { authors, createAuthor, getAuthors, getAuthorsName } =
 		useAuthorsHook();
-	const { courses, createCourse, getFilterCourses } = useCoursesHook();
+	const { courses, createCourse, getFilterCourses, getCourse } =
+		useCoursesHook();
 
 	const value = {
 		courses: courses,
@@ -16,6 +17,7 @@ export const Provider = ({ children }) => {
 		getFilterCourses,
 		getAuthors,
 		getAuthorsName,
+		getCourse,
 	};
 
 	return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
