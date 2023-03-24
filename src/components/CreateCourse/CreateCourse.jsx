@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import Button from '../../common/Button/Button';
 import Input from '../../common/__Input/Input';
@@ -19,7 +20,8 @@ import { pipeDuration } from '../../helpers/pipeDuration';
 
 import styles from './create-course.module.css';
 
-const CreateCourse = ({ handleBack }) => {
+const CreateCourse = () => {
+	const navigate = useNavigate();
 	const { createCourse, createAuthor } = useContext(DataContext);
 
 	const [errors, setErrors] = useState(null);
@@ -28,6 +30,8 @@ const CreateCourse = ({ handleBack }) => {
 	const [description, setDescription] = useState('');
 	const [duration, setDuration] = useState(0);
 	const [authorIds, setAuthorIds] = useState([]);
+
+	const handleBack = () => navigate('/courses');
 
 	const handleCreateAuthor = () => {
 		try {
@@ -62,7 +66,7 @@ const CreateCourse = ({ handleBack }) => {
 	};
 
 	return (
-		<>
+		<div className={styles.container}>
 			<Errors errors={errors} />
 			<header className={styles.header}>
 				<Input
@@ -137,7 +141,7 @@ const CreateCourse = ({ handleBack }) => {
 					/>
 				</div>
 			</div>
-		</>
+		</div>
 	);
 };
 

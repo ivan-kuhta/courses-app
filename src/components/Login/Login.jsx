@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+
 import Button from '../../common/Button/Button';
 import Input from '../../common/__Input/Input';
-import { URL_API } from '../../constants';
 import Errors from '../Errors/Errors';
+import { URL_API } from '../../constants';
+import { DataContext } from '../../contexts/DataContext';
 
 import styles from './login.module.css';
 
 const Login = () => {
 	const navigate = useNavigate();
+
+	const { login } = useContext(DataContext);
 
 	const [errors, setErrors] = useState([]);
 	const [email, setEmail] = useState('');
@@ -22,10 +26,10 @@ const Login = () => {
 				'Content-Type': 'application/json',
 			},
 		});
-		const { successful, result } = await response.json();
+		const { successful, result, user } = await response.json();
 
 		if (successful) {
-			localStorage.setItem('_token', result);
+			login(result, user);
 			navigate('/courses');
 		} else {
 			setErrors([{ message: result }]);

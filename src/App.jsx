@@ -1,22 +1,23 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useRoutes } from 'react-router-dom';
 
 import Header from './components/Header/Header';
 
-import { Provider } from './providers/DataProvider';
-import routes from './routes';
+import { getRoutes } from './routes';
 
 import './App.css';
+import { DataContext } from './contexts/DataContext';
 
 const App = () => {
-	const routesElement = useRoutes(routes);
+	const { token } = useContext(DataContext);
+
+	const routesElement = useRoutes(getRoutes(token));
+
 	return (
-		<Provider>
-			<div className='app'>
-				<Header />
-				{routesElement}
-			</div>
-		</Provider>
+		<div className='app'>
+			<Header />
+			{routesElement}
+		</div>
 	);
 };
 
