@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { URL_API } from '../constants';
 import { DataContext } from '../contexts/DataContext';
 import useAuthorsHook from '../hooks/useAuthorsHook';
 import useCoursesHook from '../hooks/useCoursesHook';
@@ -23,13 +24,27 @@ export const Provider = ({ children }) => {
 		setToken(localStorage.getItem('_token'));
 	};
 
-	useEffect(() => {
+	const fetchMe = async () => {
 		const token = localStorage.getItem('_token');
-		if (token) {
+
+		const response = await fetch(`${URL_API}/users/me`, {
+			method: 'GET',
+			headers: {
+				Authorization: token,
+			},
+		});
+		const { successful, result } = await response.json();
+
+		if (successful) {
+			setUser(result);
 			setToken(token);
 		} else {
 			setToken(null);
 		}
+	};
+
+	useEffect(() => {
+		fetchMe();
 	}, []);
 
 	const value = {
