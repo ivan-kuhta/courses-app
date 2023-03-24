@@ -1,9 +1,10 @@
 import Courses from './components/Courses/Courses';
+import Login from './components/Login/Login';
 import Registration from './components/Registration/Registration';
 
 const routes = [
 	{
-		path: '/',
+		path: 'courses',
 		element: <Courses />,
 	},
 	{
@@ -12,7 +13,7 @@ const routes = [
 	},
 	{
 		path: 'login',
-		element: <div>Login</div>,
+		element: <Login />,
 	},
 ];
 
