@@ -19,9 +19,7 @@ const Registration = () => {
 	const [errors, setErrors] = useState([]);
 
 	useEffect(() => {
-		if (token) {
-			navigate('/courses');
-		}
+		if (token) navigate('/courses');
 	}, [token, navigate]);
 
 	const fetchNewUser = async () => {

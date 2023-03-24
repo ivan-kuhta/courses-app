@@ -19,9 +19,7 @@ const Login = () => {
 	const [password, setPassword] = useState('');
 
 	useEffect(() => {
-		if (token) {
-			navigate('/courses');
-		}
+		if (token) navigate('/courses');
 	}, [token, navigate]);
 
 	const fetchLogin = async () => {
