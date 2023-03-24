@@ -8,7 +8,7 @@ const useAuthorsHook = () => {
 
 	const validationAuthor = (author) => {
 		const errors = [];
-		if (author.name.length === 0) {
+		if (author.name.trimStart().length === 0) {
 			errors.push({
 				message: 'The author name field must not be empty',
 			});
