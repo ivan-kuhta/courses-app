@@ -14,7 +14,7 @@ const Header = () => {
 	return (
 		<header className={styles.container}>
 			<Logo />
-			{token && (
+			{token && user && (
 				<>
 					<p className={styles.username}>{user.name}</p>
 					<Button

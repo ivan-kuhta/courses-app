@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Button from '../../common/Button/Button';
@@ -22,7 +22,7 @@ import styles from './create-course.module.css';
 
 const CreateCourse = () => {
 	const navigate = useNavigate();
-	const { createCourse, createAuthor } = useContext(DataContext);
+	const { createCourse, createAuthor, token } = useContext(DataContext);
 
 	const [errors, setErrors] = useState(null);
 	const [author, setAuthor] = useState('');
@@ -30,6 +30,10 @@ const CreateCourse = () => {
 	const [description, setDescription] = useState('');
 	const [duration, setDuration] = useState(0);
 	const [authorIds, setAuthorIds] = useState([]);
+
+	useEffect(() => {
+		if (!token) navigate('/');
+	}, [token, navigate]);
 
 	const handleBack = () => navigate('/courses');
 

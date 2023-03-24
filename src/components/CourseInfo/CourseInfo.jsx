@@ -10,9 +10,13 @@ import styles from './course-info.module.css';
 const CourseInfo = () => {
 	const navigate = useNavigate();
 	const { id } = useParams();
-	const { getCourse, getAuthors } = useContext(DataContext);
+	const { getCourse, getAuthors, token } = useContext(DataContext);
 
 	const [course, setCourse] = useState(null);
+
+	useEffect(() => {
+		if (!token) navigate('/');
+	}, [token, navigate]);
 
 	useEffect(() => {
 		const course = getCourse(id);

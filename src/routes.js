@@ -15,13 +15,6 @@ const routes = [
 		element: <Login />,
 	},
 	{
-		path: '*',
-		element: <Navigate to='/' />,
-	},
-];
-
-const authorizationRoutes = [
-	{
 		path: 'courses',
 		element: <Courses />,
 	},
@@ -33,17 +26,10 @@ const authorizationRoutes = [
 		path: 'courses/:id',
 		element: <CourseInfo />,
 	},
+	{
+		path: '*',
+		element: <Navigate to='/login' />,
+	},
 ];
-
-export const getRoutes = (isAuthorization) => {
-	const defaultRoute = {
-		path: '/',
-		element: isAuthorization ? <Courses /> : <Login />,
-	};
-
-	return isAuthorization
-		? [defaultRoute, ...routes, ...authorizationRoutes]
-		: [defaultRoute, ...routes];
-};
 
 export default routes;

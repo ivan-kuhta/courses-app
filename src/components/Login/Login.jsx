@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import Button from '../../common/Button/Button';
@@ -12,11 +12,17 @@ import styles from './login.module.css';
 const Login = () => {
 	const navigate = useNavigate();
 
-	const { login } = useContext(DataContext);
+	const { login, token } = useContext(DataContext);
 
 	const [errors, setErrors] = useState([]);
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+
+	useEffect(() => {
+		if (token) {
+			navigate('/courses');
+		}
+	}, [token, navigate]);
 
 	const fetchLogin = async () => {
 		const response = await fetch(`${URL_API}/login`, {

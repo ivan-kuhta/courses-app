@@ -1,17 +1,14 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useRoutes } from 'react-router-dom';
 
 import Header from './components/Header/Header';
 
-import { getRoutes } from './routes';
+import routes from './routes';
 
 import './App.css';
-import { DataContext } from './contexts/DataContext';
 
 const App = () => {
-	const { token } = useContext(DataContext);
-
-	const routesElement = useRoutes(getRoutes(token));
+	const routesElement = useRoutes(routes);
 
 	return (
 		<div className='app'>

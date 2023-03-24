@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import Button from '../../common/Button/Button';
 import CourseCard from './components/CourseCard/CourseCard';
@@ -15,9 +15,13 @@ import { useNavigate } from 'react-router-dom';
 
 const Courses = () => {
 	const navigate = useNavigate();
-	const { getFilterCourses, getAuthorsName } = useContext(DataContext);
+	const { getFilterCourses, getAuthorsName, token } = useContext(DataContext);
 
 	const [query, setQuery] = useState('');
+
+	useEffect(() => {
+		if (!token) navigate('/');
+	}, [navigate, token]);
 
 	return (
 		<div className={styles.container}>

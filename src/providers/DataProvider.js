@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { URL_API } from '../constants';
 import { DataContext } from '../contexts/DataContext';
 import useAuthorsHook from '../hooks/useAuthorsHook';
@@ -13,6 +14,8 @@ export const Provider = ({ children }) => {
 	const [token, setToken] = useState(null);
 	const [user, setUser] = useState(null);
 
+	const navigate = useNavigate();
+
 	const login = (token, user) => {
 		localStorage.setItem('_token', token);
 		setToken(localStorage.getItem('_token'));
@@ -22,11 +25,11 @@ export const Provider = ({ children }) => {
 	const logout = () => {
 		localStorage.removeItem('_token');
 		setToken(localStorage.getItem('_token'));
+		navigate('/');
 	};
 
 	const fetchMe = async () => {
 		const token = localStorage.getItem('_token');
-
 		const response = await fetch(`${URL_API}/users/me`, {
 			method: 'GET',
 			headers: {
@@ -57,6 +60,7 @@ export const Provider = ({ children }) => {
 		getAuthorsName,
 		getCourse,
 		token,
+		setToken,
 		login,
 		logout,
 		user,

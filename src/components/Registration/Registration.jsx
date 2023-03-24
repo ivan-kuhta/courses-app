@@ -1,19 +1,28 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+
 import Button from '../../common/Button/Button';
 import Input from '../../common/__Input/Input';
 import { URL_API } from '../../constants';
+import { DataContext } from '../../contexts/DataContext';
 import Errors from '../Errors/Errors';
 
 import styles from './registration.module.css';
 
 const Registration = () => {
 	const navigate = useNavigate();
+	const { token } = useContext(DataContext);
 
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [errors, setErrors] = useState([]);
+
+	useEffect(() => {
+		if (token) {
+			navigate('/courses');
+		}
+	}, [token, navigate]);
 
 	const fetchNewUser = async () => {
 		const response = await fetch(`${URL_API}/register`, {
