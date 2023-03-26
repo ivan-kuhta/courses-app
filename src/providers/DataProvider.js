@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { URL_API } from '../constants';
 import { DataContext } from '../contexts/DataContext';
@@ -11,7 +11,7 @@ export const Provider = ({ children }) => {
 	const { courses, createCourse, getFilterCourses, getCourse } =
 		useCoursesHook();
 
-	const [token, setToken] = useState(null);
+	const [token, setToken] = useState(localStorage.getItem('_token'));
 	const [user, setUser] = useState(null);
 
 	const navigate = useNavigate();
@@ -28,8 +28,7 @@ export const Provider = ({ children }) => {
 		navigate('/');
 	};
 
-	const fetchMe = async () => {
-		const token = localStorage.getItem('_token');
+	const fetchMe = async (token) => {
 		const response = await fetch(`${URL_API}/users/me`, {
 			method: 'GET',
 			headers: {
@@ -40,15 +39,12 @@ export const Provider = ({ children }) => {
 
 		if (successful) {
 			setUser(result);
-			setToken(token);
-		} else {
-			setToken(null);
 		}
 	};
 
 	useEffect(() => {
-		fetchMe();
-	}, []);
+		fetchMe(token);
+	}, [token]);
 
 	const value = {
 		courses: courses,

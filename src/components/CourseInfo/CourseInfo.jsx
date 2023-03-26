@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { DataContext } from '../../contexts/DataContext';
@@ -10,18 +10,18 @@ import styles from './course-info.module.css';
 const CourseInfo = () => {
 	const navigate = useNavigate();
 	const { id } = useParams();
-	const { getCourse, getAuthors } = useContext(DataContext);
+	const { getCourse, getAuthors, token } = useContext(DataContext);
 
 	const [course, setCourse] = useState(null);
 
 	useEffect(() => {
 		const course = getCourse(id);
-		if (course) {
+		if (course && token) {
 			setCourse(getCourse(id));
 		} else {
 			navigate('/courses');
 		}
-	}, [id, getCourse, navigate]);
+	}, [id, getCourse, navigate, token]);
 
 	return (
 		<div className={styles.container}>
