@@ -1,45 +1,41 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
 import Button from '../../common/Button/Button';
 import Input from '../../common/__Input/Input';
-import { URL_API } from '../../constants';
-import { DataContext } from '../../contexts/DataContext';
+import { AuthService } from '../../services';
+import { getIsAuth } from '../../store/user/selectors';
 import Errors from '../Errors/Errors';
 
 import styles from './registration.module.css';
 
 const Registration = () => {
 	const navigate = useNavigate();
-	const { token } = useContext(DataContext);
 
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [errors, setErrors] = useState([]);
 
+	const isAuth = useSelector(getIsAuth);
+
 	useEffect(() => {
-		if (token) navigate('/courses');
-	}, [token, navigate]);
+		if (isAuth) navigate('/courses');
+	}, [isAuth, navigate]);
 
 	const fetchNewUser = async () => {
-		const response = await fetch(`${URL_API}/register`, {
-			method: 'POST',
-			body: JSON.stringify({
-				name,
-				email,
-				password,
-			}),
-			headers: {
-				'Content-Type': 'application/json',
-			},
+		AuthService.register({
+			name,
+			email,
+			password,
+		}).then(({ successful, errors }) => {
+			if (successful) {
+				navigate('/login');
+			} else {
+				setErrors(errors.map((message) => ({ message })));
+			}
 		});
-		const { successful, errors } = await response.json();
-		if (successful) {
-			navigate('/login');
-		} else {
-			setErrors(errors.map((message) => ({ message })));
-		}
 	};
 
 	const handlerSubmit = async (e) => {

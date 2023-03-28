@@ -1,11 +1,16 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { MdDeleteForever, MdModeEdit } from 'react-icons/md';
+
+import { getAuthors } from '../../../../store/authors/selectors';
+import { deleteCourse } from '../../../../store/courses/actionCreators';
 
 import Button from '../../../../common/Button/Button';
 
 import { TEXT_SHOW_COURSE } from '../../../../constants';
 
-import { transformDate } from '../../../../helpers/transformDate';
+import { getNames } from '../../../../helpers/getNames';
 
 import styles from './course-card.module.css';
 
@@ -18,6 +23,12 @@ const CourseCard = ({
 	authors,
 }) => {
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
+	authors = useSelector(getAuthors(authors));
+
+	const handlerRemove = () => {
+		dispatch(deleteCourse(id));
+	};
 
 	return (
 		<div className={styles.container}>
@@ -27,19 +38,26 @@ const CourseCard = ({
 			</div>
 			<div className={styles.info}>
 				<p className={styles.overflow}>
-					<b>Authors:</b> {authors}
+					<b>Authors:</b> {getNames(authors)}
 				</p>
 				<p>
 					<b>Duration:</b> {duration}
 				</p>
 				<p>
-					<b>Created:</b> {transformDate(creationDate)}
+					<b>Created:</b> {creationDate}
 				</p>
-				<Button
-					text={TEXT_SHOW_COURSE}
-					className={styles.btn}
-					onClick={() => navigate(`/courses/${id}`)}
-				/>
+				<div className={styles.btns}>
+					<Button
+						text={TEXT_SHOW_COURSE}
+						onClick={() => navigate(`/courses/${id}`)}
+					/>
+					<Button
+						theme={'icon'}
+						text={<MdDeleteForever />}
+						onClick={handlerRemove}
+					></Button>
+					<Button theme={'icon'} text={<MdModeEdit />}></Button>
+				</div>
 			</div>
 		</div>
 	);

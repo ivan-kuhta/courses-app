@@ -1,8 +1,9 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux';
 
 import Button from '../../common/Button/Button';
 import { TEXT_AUTHORS_LIST_EMPTY } from '../../constants';
-import { DataContext } from '../../contexts/DataContext';
+import { getAuthors } from '../../store/authors/selectors';
 
 import styles from './authors.module.css';
 
@@ -12,9 +13,7 @@ const Authors = ({
 	textButton,
 	isMatched = true,
 }) => {
-	const { getAuthors } = useContext(DataContext);
-
-	const authors = getAuthors(authorIds, isMatched);
+	const authors = useSelector(getAuthors(authorIds, isMatched));
 
 	if (authors.length === 0)
 		return <p className={styles.center}>{TEXT_AUTHORS_LIST_EMPTY}</p>;

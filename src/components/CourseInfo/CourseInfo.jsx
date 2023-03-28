@@ -1,27 +1,29 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
-import { DataContext } from '../../contexts/DataContext';
-import { dateGeneratop } from '../../helpers/dateGeneratop';
+import { getAuthors } from '../../store/authors/selectors';
+import { getCourseById } from '../../store/courses/selectors';
+import { getUser } from '../../store/user/selectors';
+
 import { pipeDuration } from '../../helpers/pipeDuration';
+import { transformDate } from '../../helpers/transformDate';
 
 import styles from './course-info.module.css';
 
 const CourseInfo = () => {
 	const navigate = useNavigate();
 	const { id } = useParams();
-	const { getCourse, getAuthors, token } = useContext(DataContext);
 
-	const [course, setCourse] = useState(null);
+	const course = useSelector(getCourseById(id));
+	const authors = useSelector(getAuthors(course?.authors || []));
+	const { isAuth } = useSelector(getUser);
 
 	useEffect(() => {
-		const course = getCourse(id);
-		if (course && token) {
-			setCourse(getCourse(id));
-		} else {
+		if (!isAuth || !course) {
 			navigate('/courses');
 		}
-	}, [id, getCourse, navigate, token]);
+	}, [isAuth, navigate, course]);
 
 	return (
 		<div className={styles.container}>
@@ -41,12 +43,12 @@ const CourseInfo = () => {
 								<b>Duration:</b> {pipeDuration(course.duration)} hours
 							</p>
 							<p>
-								<b>Created:</b> {dateGeneratop(course.creationDate)}
+								<b>Created:</b> {transformDate(course.creationDate)}
 							</p>
 							<p>
 								<b>Authors:</b>
 							</p>
-							{getAuthors(course.authors).map(({ id, name }) => (
+							{authors.map(({ id, name }) => (
 								<p key={id}>{name}</p>
 							))}
 						</div>

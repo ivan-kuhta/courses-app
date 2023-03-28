@@ -1,26 +1,30 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { logout } from '../../store/user/actionCreators';
+import { getUser } from '../../store/user/selectors';
 
 import Button from '../../common/Button/Button';
 import Logo from './components/Logo/Logo';
 import { TEXT_LOGOUT } from '../../constants';
 
-import { DataContext } from '../../contexts/DataContext';
-
 import styles from './header.module.css';
 
 const Header = () => {
-	const { token, logout, user } = useContext(DataContext);
+	const dispatch = useDispatch();
+
+	const { name, isAuth, token } = useSelector(getUser);
 
 	return (
 		<header className={styles.container}>
 			<Logo />
-			{token && user && (
+			{isAuth && (
 				<>
-					<p className={styles.username}>{user.name}</p>
+					<p className={styles.username}>{name}</p>
 					<Button
 						className={styles.btn}
 						text={TEXT_LOGOUT}
-						onClick={() => logout()}
+						onClick={() => dispatch(logout(token))}
 					/>
 				</>
 			)}
