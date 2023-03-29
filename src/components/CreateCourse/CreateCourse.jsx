@@ -25,7 +25,7 @@ import { dateGeneratop } from '../../helpers/dateGeneratop';
 
 import styles from './create-course.module.css';
 
-const CreateCourse = ({ isEdit }) => {
+const CreateCourse = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
