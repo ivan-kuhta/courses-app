@@ -60,13 +60,14 @@ const CreateCourse = () => {
 			authors: authorIds,
 			creationDate: dateGeneratop(),
 		};
-		try {
-			if (CoursesServices.validation(data)) {
-				dispatch(addCourse(data));
-				handleBack();
-			}
-		} catch (e) {
-			setErrors(e);
+
+		const resultValidation = CoursesServices.validation(data);
+
+		if (!Array.isArray(resultValidation)) {
+			dispatch(addCourse(data));
+			handleBack();
+		} else {
+			setErrors(resultValidation);
 		}
 	};
 

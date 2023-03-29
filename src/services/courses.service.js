@@ -1,23 +1,18 @@
 import { URL_API } from '../constants';
 
-export class CoursesServices {
-	static URL = URL_API + '/courses/';
+export async function getCourses() {
+	const res = await fetch(URL_API + '/courses/all');
+	return res.json();
+}
 
-	static async getCourses() {
-		const res = await fetch(this.URL + 'all');
-		return res.json();
+export async function validation(course) {
+	const errors = [];
+	if (course.description.length < 2) {
+		errors.push({
+			message:
+				'The length of the description field should be at least 2 characters',
+		});
 	}
 
-	static validation(course) {
-		const errors = [];
-		if (course.description.length < 2) {
-			errors.push({
-				message:
-					'The length of the description field should be at least 2 characters',
-			});
-		}
-
-		if (errors.length > 0) throw errors;
-		else return true;
-	}
+	return errors.length > 0 ? errors : true;
 }

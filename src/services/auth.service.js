@@ -1,48 +1,44 @@
 import { URL_API } from '../constants';
 
-export class AuthService {
-	static URL = URL_API + '/';
+export async function getUser(token) {
+	const res = await fetch(URL_API + '/users/me', {
+		headers: {
+			Authorization: token,
+		},
+	});
 
-	static async getUser(token) {
-		const res = await fetch(this.URL + 'users/me', {
-			headers: {
-				Authorization: token,
-			},
-		});
+	return res.json();
+}
 
-		return res.json();
-	}
+export async function login(user) {
+	const res = await fetch(this.URL + 'login', {
+		method: 'POST',
+		body: JSON.stringify(user),
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	});
 
-	static async login(user) {
-		const res = await fetch(this.URL + 'login', {
-			method: 'POST',
-			body: JSON.stringify(user),
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		});
+	return res.json();
+}
 
-		return res.json();
-	}
+export async function logout(token) {
+	return fetch(this.URL + 'logout', {
+		method: 'DELETE',
+		headers: {
+			Authorization: token,
+		},
+	});
+}
 
-	static async logout(token) {
-		return fetch(this.URL + 'logout', {
-			method: 'DELETE',
-			headers: {
-				Authorization: token,
-			},
-		});
-	}
+export async function register(user) {
+	const res = await fetch(`${URL_API}/register`, {
+		method: 'POST',
+		body: JSON.stringify(user),
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	});
 
-	static async register(user) {
-		const res = await fetch(`${URL_API}/register`, {
-			method: 'POST',
-			body: JSON.stringify(user),
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		});
-
-		return await res.json();
-	}
+	return await res.json();
 }

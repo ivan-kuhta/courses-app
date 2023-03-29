@@ -20,14 +20,15 @@ const CreateAuthor = () => {
 
 	const handleCreateAuthor = () => {
 		const data = { name: author };
-		try {
-			if (AuthorsServices.validation(data)) {
-				dispatch(addAuthor({ name: author }));
-				setAuthor('');
-				setErrors(null);
-			}
-		} catch (e) {
-			setErrors(e);
+
+		const resultValidation = AuthorsServices.validation(data);
+
+		if (!Array.isArray(resultValidation)) {
+			dispatch(addAuthor(data));
+			setAuthor('');
+			setErrors(null);
+		} else {
+			setErrors(resultValidation);
 		}
 	};
 
