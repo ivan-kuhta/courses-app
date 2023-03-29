@@ -6,6 +6,6 @@ export const getCourseById = (id) => (state) =>
 export const getFilterCourses = (query) => (state) =>
 	state.courses.filter(
 		(course) =>
-			course.id.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
-			course.title.toLowerCase().indexOf(query.toLowerCase()) !== -1
+			course.id.toLowerCase().includes(query.toLowerCase()) ||
+			course.title.toLowerCase().includes(query.toLowerCase())
 	);
