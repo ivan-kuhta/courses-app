@@ -11,7 +11,7 @@ export async function getUser(token) {
 }
 
 export async function login(user) {
-	const res = await fetch(this.URL + 'login', {
+	const res = await fetch(URL_API + '/login', {
 		method: 'POST',
 		body: JSON.stringify(user),
 		headers: {
@@ -23,7 +23,7 @@ export async function login(user) {
 }
 
 export async function logout(token) {
-	return fetch(this.URL + 'logout', {
+	return fetch(URL_API + '/logout', {
 		method: 'DELETE',
 		headers: {
 			Authorization: token,
@@ -32,7 +32,7 @@ export async function logout(token) {
 }
 
 export async function register(user) {
-	const res = await fetch(`${URL_API}/register`, {
+	const res = await fetch(URL_API + '/register', {
 		method: 'POST',
 		body: JSON.stringify(user),
 		headers: {

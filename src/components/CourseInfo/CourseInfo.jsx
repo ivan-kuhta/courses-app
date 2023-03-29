@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
-import { getAuthors } from '../../store/authors/selectors';
 import { getCourseById } from '../../store/courses/selectors';
 import { getUser } from '../../store/user/selectors';
 
@@ -10,13 +9,14 @@ import { pipeDuration } from '../../helpers/pipeDuration';
 import { transformDate } from '../../helpers/transformDate';
 
 import styles from './course-info.module.css';
+import { getAuthorsSelected } from '../../store/authors/selectors';
 
 const CourseInfo = () => {
 	const navigate = useNavigate();
 	const { id } = useParams();
 
 	const course = useSelector(getCourseById(id));
-	const authors = useSelector(getAuthors(course?.authors || []));
+	const authors = useSelector(getAuthorsSelected(course?.authors || []));
 	const { isAuth } = useSelector(getUser);
 
 	useEffect(() => {

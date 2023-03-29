@@ -5,7 +5,7 @@ export async function getAuthors() {
 	return res.json();
 }
 
-export async function validation(author) {
+export function validation(author) {
 	const errors = [];
 	if (author.name.trimStart().length === 0) {
 		errors.push({

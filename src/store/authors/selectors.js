@@ -1,6 +1,9 @@
-export const getAuthors =
-	(authorIds, selected = true) =>
-	(state) =>
-		state.authors.filter(
-			(author) => authorIds.includes(author.id) === selected
-		);
+export const getAuthorsSelected =
+	(authorsIds) =>
+	({ authors }) =>
+		authors.filter(({ id }) => authorsIds.includes(id));
+
+export const getAuthorsNotSelected =
+	(authorsIds) =>
+	({ authors }) =>
+		authors.filter(({ id }) => !authorsIds.includes(id));

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { MdDeleteForever, MdModeEdit } from 'react-icons/md';
 
-import { getAuthors } from '../../../../store/authors/selectors';
+import { getAuthorsSelected } from '../../../../store/authors/selectors';
 import { deleteCourse } from '../../../../store/courses/actionCreators';
 
 import Button from '../../../../common/Button/Button';
@@ -24,7 +24,7 @@ const CourseCard = ({
 }) => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	authors = useSelector(getAuthors(authors));
+	authors = useSelector(getAuthorsSelected(authors));
 
 	const handlerRemove = () => {
 		dispatch(deleteCourse(id));

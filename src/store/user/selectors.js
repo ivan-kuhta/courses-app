@@ -1,3 +1,3 @@
-export const getToken = (state) => state.user.token;
-export const getIsAuth = (state) => state.user.isAuth;
-export const getUser = (state) => state.user;
+export const getToken = ({ user: { token } }) => token;
+export const getIsAuth = ({ user: { isAuth } }) => isAuth;
+export const getUser = ({ user }) => user;

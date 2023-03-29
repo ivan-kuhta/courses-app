@@ -3,7 +3,10 @@ import { useSelector } from 'react-redux';
 
 import Button from '../../common/Button/Button';
 import { TEXT_AUTHORS_LIST_EMPTY } from '../../constants';
-import { getAuthors } from '../../store/authors/selectors';
+import {
+	getAuthorsNotSelected,
+	getAuthorsSelected,
+} from '../../store/authors/selectors';
 
 import styles from './authors.module.css';
 
@@ -13,7 +16,9 @@ const Authors = ({
 	textButton,
 	isMatched = true,
 }) => {
-	const authors = useSelector(getAuthors(authorIds, isMatched));
+	const authors = useSelector(
+		isMatched ? getAuthorsSelected(authorIds) : getAuthorsNotSelected(authorIds)
+	);
 
 	if (authors.length === 0)
 		return <p className={styles.center}>{TEXT_AUTHORS_LIST_EMPTY}</p>;

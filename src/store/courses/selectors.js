@@ -1,11 +1,15 @@
-export const getCourses = (state) => state.courses;
+export const getCourses = ({ courses }) => courses;
 
-export const getCourseById = (id) => (state) =>
-	state.courses.find((course) => course.id === id);
+export const getCourseById =
+	(courseId) =>
+	({ courses }) =>
+		courses.find(({ id }) => id === courseId);
 
-export const getFilterCourses = (query) => (state) =>
-	state.courses.filter(
-		(course) =>
-			course.id.toLowerCase().includes(query.toLowerCase()) ||
-			course.title.toLowerCase().includes(query.toLowerCase())
-	);
+export const getFilterCourses =
+	(query) =>
+	({ courses }) =>
+		courses.filter(
+			(course) =>
+				course.id.toLowerCase().includes(query.toLowerCase()) ||
+				course.title.toLowerCase().includes(query.toLowerCase())
+		);

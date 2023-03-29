@@ -5,7 +5,7 @@ export async function getCourses() {
 	return res.json();
 }
 
-export async function validation(course) {
+export function validation(course) {
 	const errors = [];
 	if (course.description.length < 2) {
 		errors.push({
