@@ -1,7 +1,12 @@
 import { v4 as uuid } from 'uuid';
 
 import { CoursesServices } from '../../services';
-import { ADD_COURSE, DELETE_COURSE, SET_COURSES } from './actionTypes';
+import {
+	ADD_COURSE,
+	DELETE_COURSE,
+	SET_COURSES,
+	UPDATE_COURSE,
+} from './actionTypes';
 import { SET_LOADING_COURSES } from '../loadings/actionTypes';
 
 export const fetchCourses = (dispatch) => {
@@ -26,5 +31,5 @@ export const deleteCourse = (id) => (dispatch) => {
 };
 
 export const updateCourse = (course) => (dispatch) => {
-	dispatch({ type: DELETE_COURSE, payload: course });
+	dispatch({ type: UPDATE_COURSE, payload: course });
 };
