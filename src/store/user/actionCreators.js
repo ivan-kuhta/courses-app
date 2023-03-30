@@ -2,7 +2,7 @@ import { AuthService } from '../../services';
 import { SET_ERRORS, SET_LOADING_USER } from '../loadings/actionTypes';
 import { LOGIN, LOGOUT } from './actionTypes';
 
-export const checkAuth = (token) => (dispatch) => {
+export const checkAuth = () => (dispatch) => {
 	const token = localStorage.getItem('_token');
 	if (token) {
 		dispatch({ type: SET_LOADING_USER, payload: true });
