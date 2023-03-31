@@ -1,48 +1,38 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
 import Button from '../../common/Button/Button';
 import Input from '../../common/__Input/Input';
+import { getErrors } from '../../store/loadings/selectors';
+import { login } from '../../store/user/actionCreators';
+import { getIsAuth } from '../../store/user/selectors';
 import Errors from '../Errors/Errors';
-import { URL_API } from '../../constants';
-import { DataContext } from '../../contexts/DataContext';
 
 import styles from './login.module.css';
 
 const Login = () => {
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
-	const { login, token } = useContext(DataContext);
-
-	const [errors, setErrors] = useState([]);
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 
+	const errors = useSelector(getErrors);
+	const isAuth = useSelector(getIsAuth);
+
 	useEffect(() => {
-		if (token) navigate('/courses');
-	}, [token, navigate]);
-
-	const fetchLogin = async () => {
-		const response = await fetch(`${URL_API}/login`, {
-			method: 'POST',
-			body: JSON.stringify({ email, password }),
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		});
-		const { successful, result, user } = await response.json();
-
-		if (successful) {
-			login(result, user);
-			navigate('/courses');
-		} else {
-			setErrors([{ message: result }]);
-		}
-	};
+		if (isAuth) navigate('/courses');
+	}, [isAuth, navigate]);
 
 	const handlerSubmit = (e) => {
 		e.preventDefault();
-		fetchLogin();
+		dispatch(
+			login({
+				email,
+				password,
+			})
+		);
 	};
 
 	return (

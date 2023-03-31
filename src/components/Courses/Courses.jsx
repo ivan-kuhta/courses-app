@@ -1,27 +1,33 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
+import { getIsAuth } from '../../store/user/selectors';
+import { getFilterCourses } from '../../store/courses/selectors';
 
 import Button from '../../common/Button/Button';
 import CourseCard from './components/CourseCard/CourseCard';
 import SearchBar from './components/SearchBar/SearchBar';
 import { TEXT_ADD_NEW_COURSE } from '../../constants';
 
-import { dateGeneratop } from '../../helpers/dateGeneratop';
 import { pipeDuration } from '../../helpers/pipeDuration';
 
-import { DataContext } from '../../contexts/DataContext';
+import { transformDate } from '../../helpers/transformDate';
 
 import styles from './courses.module.css';
-import { useNavigate } from 'react-router-dom';
 
 const Courses = () => {
 	const navigate = useNavigate();
-	const { getFilterCourses, getAuthorsName, token } = useContext(DataContext);
 
 	const [query, setQuery] = useState('');
 
+	const courses = useSelector(getFilterCourses(query));
+
+	const isAuth = useSelector(getIsAuth);
+
 	useEffect(() => {
-		if (!token) navigate('/');
-	}, [navigate, token]);
+		if (!isAuth) navigate('/');
+	}, [isAuth, navigate]);
 
 	return (
 		<div className={styles.container}>
@@ -34,18 +40,16 @@ const Courses = () => {
 					/>
 				</header>
 				<div className={styles.list}>
-					{getFilterCourses(query).map(
-						({ id, authors, duration, creationDate, ...course }) => (
-							<CourseCard
-								key={id}
-								{...course}
-								id={id}
-								authors={getAuthorsName(authors)}
-								duration={pipeDuration(duration) + ' hours'}
-								creationDate={dateGeneratop(creationDate)}
-							/>
-						)
-					)}
+					{courses.map(({ id, authors, duration, creationDate, ...course }) => (
+						<CourseCard
+							key={id}
+							{...course}
+							id={id}
+							authors={authors}
+							duration={pipeDuration(duration) + ' hours'}
+							creationDate={transformDate(creationDate)}
+						/>
+					))}
 				</div>
 			</>
 		</div>

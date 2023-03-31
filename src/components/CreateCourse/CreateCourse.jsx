@@ -1,71 +1,73 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { getUser } from '../../store/user/selectors';
+import { addCourse } from '../../store/courses/actionCreators';
+
+import { CoursesServices } from '../../services';
 
 import Button from '../../common/Button/Button';
 import Input from '../../common/__Input/Input';
 import Textarea from '../../common/Textarea/Textarea';
+import CreateAuthor from './components/CreateAuthor/CreateAuthor';
 import Errors from '../Errors/Errors';
 import Authors from '../Authors/Authors';
 import {
 	TEXT_ADD_AUTHOR,
 	TEXT_CANCEL,
-	TEXT_CREATE_AUTHOR,
 	TEXT_CREATE_COURSE,
 	TEXT_REMOVE_AUTHOR,
 } from '../../constants';
 
-import { DataContext } from '../../contexts/DataContext';
-
 import { pipeDuration } from '../../helpers/pipeDuration';
+import { dateGeneratop } from '../../helpers/dateGeneratop';
 
 import styles from './create-course.module.css';
 
 const CreateCourse = () => {
 	const navigate = useNavigate();
-	const { createCourse, createAuthor, token } = useContext(DataContext);
+	const dispatch = useDispatch();
+
+	const [authorIds, setAuthorIds] = useState([]);
+
+	const { isAuth } = useSelector(getUser);
 
 	const [errors, setErrors] = useState(null);
-	const [author, setAuthor] = useState('');
 	const [title, setTitle] = useState('');
 	const [description, setDescription] = useState('');
 	const [duration, setDuration] = useState(0);
-	const [authorIds, setAuthorIds] = useState([]);
 
 	useEffect(() => {
-		if (!token) navigate('/');
-	}, [token, navigate]);
+		if (!isAuth) navigate('/');
+	}, [isAuth, navigate]);
 
 	const handleBack = () => navigate('/courses');
 
-	const handleCreateAuthor = () => {
-		try {
-			createAuthor({ name: author });
-			setAuthor('');
-			setErrors(null);
-		} catch (errors) {
-			setErrors(errors);
-		}
+	const handleAddAuthor = (id) => {
+		setAuthorIds([...authorIds, id]);
 	};
 
 	const handleRemoveAuthor = (id) => {
 		setAuthorIds(authorIds.filter((authorId) => authorId !== id));
 	};
 
-	const handleAddAuthor = (id) => {
-		setAuthorIds([...authorIds, id]);
-	};
-
 	const handlerCreateCourse = () => {
-		try {
-			createCourse({
-				title,
-				description,
-				duration: Number(duration),
-				authors: authorIds,
-			});
+		const data = {
+			title,
+			description,
+			duration: Number(duration),
+			authors: authorIds,
+			creationDate: dateGeneratop(),
+		};
+
+		const resultValidation = CoursesServices.validation(data);
+
+		if (!Array.isArray(resultValidation)) {
+			dispatch(addCourse(data));
 			handleBack();
-		} catch (errors) {
-			setErrors(errors);
+		} else {
+			setErrors(resultValidation);
 		}
 	};
 
@@ -98,17 +100,7 @@ const CreateCourse = () => {
 			<div className={`${styles.flex} ${styles['info-fields']}`}>
 				<div className={styles.column}>
 					<h3 className={styles.title}>Add author</h3>
-					<Input
-						value={author}
-						labelText={'Author name'}
-						placeholdetText={'Enter author name...'}
-						onChange={({ target: { value } }) => setAuthor(value)}
-					/>
-					<Button
-						className={styles.center}
-						text={TEXT_CREATE_AUTHOR}
-						onClick={handleCreateAuthor}
-					/>
+					<CreateAuthor />
 				</div>
 				<div className={styles.column}>
 					<h3 className={styles.title}>Authors</h3>
