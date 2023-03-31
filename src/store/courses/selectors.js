@@ -1,15 +1,18 @@
-export const getCourses = ({ courses }) => courses;
+export const getCourses = ({ courses: { items } }) => items;
 
 export const getCourseById =
 	(courseId) =>
-	({ courses }) =>
-		courses.find(({ id }) => id === courseId);
+	({ courses: { items } }) =>
+		items.find(({ id }) => id === courseId);
 
 export const getFilterCourses =
 	(query) =>
-	({ courses }) =>
-		courses.filter(
+	({ courses: { items } }) =>
+		items.filter(
 			(course) =>
 				course.id.toLowerCase().includes(query.toLowerCase()) ||
 				course.title.toLowerCase().includes(query.toLowerCase())
 		);
+
+export const getCoursesLoading = ({ courses: { loading } }) => loading;
+export const getCoursesErrors = ({ courses: { errors } }) => errors;

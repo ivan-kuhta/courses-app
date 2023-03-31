@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react';
-import { useRoutes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { checkAuth } from './store/user/actionCreators';
-import { fetchCourses } from './store/courses/actionCreators';
-import { fetchAuthors } from './store/authors/actionCreators';
-import { getIsAuth } from './store/user/selectors';
-import { getLoadingUser } from './store/loadings/selectors';
+import { fetchUser } from './store/user/thunk';
+import { getUserLoading } from './store/user/selectors';
+import { getAuthorsLoading } from './store/authors/selectors';
+import { getCoursesLoading } from './store/courses/selectors';
 
 import Header from './components/Header/Header';
+import PrivateRoute from './components/PrivateRoute/PrivateRoute';
+import Loading from './components/Loading/Loading';
 
 import routes from './routes';
 
@@ -16,27 +17,34 @@ import './App.css';
 
 const App = () => {
 	const dispatch = useDispatch();
-	const routesElement = useRoutes(routes);
-	const isAuth = useSelector(getIsAuth);
-	const isLoadingUser = useSelector(getLoadingUser);
+
+	const isUserLoading = useSelector(getUserLoading);
+	const isAuthorsLoading = useSelector(getAuthorsLoading);
+	const isCoursesLoading = useSelector(getCoursesLoading);
 
 	useEffect(() => {
-		dispatch(checkAuth());
+		dispatch(fetchUser());
 	}, [dispatch]);
-
-	useEffect(() => {
-		if (isAuth) {
-			dispatch(fetchCourses);
-			dispatch(fetchAuthors);
-		}
-	}, [dispatch, isAuth]);
-
-	if (isLoadingUser) return <p>Loading...</p>;
 
 	return (
 		<div className='app'>
+			{(isUserLoading || isAuthorsLoading || isCoursesLoading) && (
+				<Loading color={'purple'} />
+			)}
 			<Header />
-			{routesElement}
+			<Routes>
+				{routes.map(({ path, element, isPrivate }, index) =>
+					!isPrivate ? (
+						<Route key={index} path={path} element={element} exact />
+					) : (
+						<Route
+							key={index}
+							path={path}
+							element={<PrivateRoute>{element}</PrivateRoute>}
+						/>
+					)
+				)}
+			</Routes>
 		</div>
 	);
 };

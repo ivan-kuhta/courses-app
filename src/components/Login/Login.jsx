@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
+import { getIsAuth, getUserErrors } from '../../store/user/selectors';
+import { login } from '../../store/user/thunk';
+
 import Button from '../../common/Button/Button';
 import Input from '../../common/__Input/Input';
-import { getErrors } from '../../store/loadings/selectors';
-import { login } from '../../store/user/actionCreators';
-import { getIsAuth } from '../../store/user/selectors';
 import Errors from '../Errors/Errors';
 
 import styles from './login.module.css';
@@ -18,11 +18,14 @@ const Login = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 
-	const errors = useSelector(getErrors);
+	const errors = useSelector(getUserErrors);
+
 	const isAuth = useSelector(getIsAuth);
 
 	useEffect(() => {
-		if (isAuth) navigate('/courses');
+		if (isAuth) {
+			navigate('/courses');
+		}
 	}, [isAuth, navigate]);
 
 	const handlerSubmit = (e) => {

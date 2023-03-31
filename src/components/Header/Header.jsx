@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { logout } from '../../store/user/actionCreators';
+import { logout } from '../../store/user/thunk';
 import { getUser } from '../../store/user/selectors';
 
 import Button from '../../common/Button/Button';

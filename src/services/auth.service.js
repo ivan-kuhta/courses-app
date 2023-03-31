@@ -7,6 +7,11 @@ export async function getUser(token) {
 		},
 	});
 
+	if (!res.ok) {
+		const error = { code: res.status, message: res.statusText };
+		throw error;
+	}
+
 	return res.json();
 }
 
@@ -18,6 +23,11 @@ export async function login(user) {
 			'Content-Type': 'application/json',
 		},
 	});
+
+	if (!res.ok) {
+		const error = { code: res.status, message: res.statusText };
+		throw error;
+	}
 
 	return res.json();
 }
@@ -39,6 +49,11 @@ export async function register(user) {
 			'Content-Type': 'application/json',
 		},
 	});
+
+	if (!res.ok) {
+		const error = { code: res.status, message: res.statusText };
+		throw error;
+	}
 
 	return await res.json();
 }

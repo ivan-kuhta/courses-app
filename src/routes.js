@@ -1,34 +1,40 @@
 import { Navigate } from 'react-router-dom';
 import CourseInfo from './components/CourseInfo/CourseInfo';
 import Courses from './components/Courses/Courses';
-import CreateCourse from './components/CreateCourse/CreateCourse';
 import Login from './components/Login/Login';
 import Registration from './components/Registration/Registration';
+import CourseForm from './components/CourseForm/CourseForm';
 
 const routes = [
 	{
-		path: 'registration',
+		path: '/registration',
 		element: <Registration />,
 	},
 	{
-		path: 'login',
+		path: '/login',
 		element: <Login />,
 	},
 	{
-		path: 'courses',
+		path: '/courses',
 		element: <Courses />,
 	},
 	{
-		path: 'courses/add',
-		element: <CreateCourse />,
-	},
-	{
-		path: 'courses/:id',
+		path: '/courses/:id',
 		element: <CourseInfo />,
 	},
 	{
+		path: '/courses/add',
+		element: <CourseForm />,
+		isPrivate: true,
+	},
+	{
+		path: '/courses/update/:id',
+		element: <CourseForm />,
+		isPrivate: true,
+	},
+	{
 		path: '*',
-		element: <Navigate to='/login' />,
+		element: <Navigate to='/login' replace />,
 	},
 ];
 
