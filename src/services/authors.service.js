@@ -3,12 +3,14 @@ import { URL_API } from '../constants';
 export async function getAuthors() {
 	const res = await fetch(URL_API + '/authors/all');
 
-	if (!res.ok) {
-		const error = { code: res.status, message: res.statusText };
+	const json = await res.json();
+
+	if (!res.ok && !json.successful) {
+		const error = { code: res.status, message: json.result || res.statusText };
 		throw error;
 	}
 
-	return res.json();
+	return json;
 }
 
 export async function postAuthor(data, token) {
@@ -22,12 +24,17 @@ export async function postAuthor(data, token) {
 			},
 		});
 
-		if (!res.ok) {
-			const error = { code: res.status, message: res.statusText };
+		const json = await res.json();
+
+		if (!res.ok && !json.successful) {
+			const error = {
+				code: res.status,
+				message: json.result || res.statusText,
+			};
 			throw error;
 		}
 
-		return res.json();
+		return json;
 	}
 }
 

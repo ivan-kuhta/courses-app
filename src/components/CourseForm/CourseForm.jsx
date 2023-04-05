@@ -137,6 +137,7 @@ const CourseForm = () => {
 				<div className={styles.column}>
 					<h3 className={styles.title}>Authors</h3>
 					<Authors
+						className={'authors--not-selected'}
 						textButton={TEXT_ADD_AUTHOR}
 						authorIds={authorIds}
 						isMatched={false}
@@ -163,6 +164,7 @@ const CourseForm = () => {
 				<div className={styles.column}>
 					<h3 className={styles.title}>Course authors</h3>
 					<Authors
+						className={'authors--selected'}
 						textButton={TEXT_REMOVE_AUTHOR}
 						authorIds={authorIds}
 						handleAuthor={handleRemoveAuthor}

@@ -7,12 +7,14 @@ export async function getUser(token) {
 		},
 	});
 
-	if (!res.ok) {
-		const error = { code: res.status, message: res.statusText };
+	const json = await res.json();
+
+	if (!res.ok && !json.successful) {
+		const error = { code: res.status, message: json.result || res.statusText };
 		throw error;
 	}
 
-	return res.json();
+	return json;
 }
 
 export async function login(user) {
@@ -24,12 +26,14 @@ export async function login(user) {
 		},
 	});
 
-	if (!res.ok) {
-		const error = { code: res.status, message: res.statusText };
+	const json = await res.json();
+
+	if (!res.ok && !json.successful) {
+		const error = { code: res.status, message: json.result || res.statusText };
 		throw error;
 	}
 
-	return res.json();
+	return json;
 }
 
 export async function logout(token) {
@@ -50,10 +54,12 @@ export async function register(user) {
 		},
 	});
 
-	if (!res.ok) {
-		const error = { code: res.status, message: res.statusText };
+	const json = await res.json();
+
+	if (!res.ok && !json.successful) {
+		const error = { code: res.status, message: json.result || res.statusText };
 		throw error;
 	}
 
-	return await res.json();
+	return json;
 }

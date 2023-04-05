@@ -12,10 +12,6 @@ import CourseCard from './components/CourseCard/CourseCard';
 import SearchBar from './components/SearchBar/SearchBar';
 import { TEXT_ADD_NEW_COURSE } from '../../constants';
 
-import { pipeDuration } from '../../helpers/pipeDuration';
-
-import { transformDate } from '../../helpers/transformDate';
-
 import styles from './courses.module.css';
 
 const Courses = () => {
@@ -46,15 +42,8 @@ const Courses = () => {
 					)}
 				</header>
 				<div className={styles.list}>
-					{courses.map(({ id, authors, duration, creationDate, ...course }) => (
-						<CourseCard
-							key={id}
-							{...course}
-							id={id}
-							authors={authors}
-							duration={pipeDuration(duration) + ' hours'}
-							creationDate={transformDate(creationDate)}
-						/>
+					{courses.map(({ id, ...course }) => (
+						<CourseCard key={id} id={id} {...course} />
 					))}
 				</div>
 			</>

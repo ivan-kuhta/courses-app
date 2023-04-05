@@ -19,10 +19,15 @@ export const fetchUser = () => (dispatch) => {
 						type: FETCH_USER_SUCCESS,
 						payload: { token, name, email, role },
 					});
+				} else {
+					dispatch({
+						type: FETCH_USER_ERROR,
+						payload: { message: 'Unauthorized' },
+					});
 				}
 			})
-			.catch((errors) => {
-				dispatch({ type: FETCH_USER_ERROR, payload: errors });
+			.catch(() => {
+				dispatch({ type: CLEAR_USER });
 			});
 	} else dispatch({ type: CLEAR_USER });
 };
@@ -35,7 +40,6 @@ export const register = (user, callback) => (dispatch) => {
 				dispatch({ type: FETCH_USER_FINNALY });
 				callback && callback();
 			} else {
-				console.log(errors);
 				dispatch({
 					type: FETCH_USER_ERROR,
 					payload: { message: errors },
@@ -43,7 +47,10 @@ export const register = (user, callback) => (dispatch) => {
 			}
 		})
 		.catch((errors) => {
-			dispatch({ type: FETCH_USER_ERROR, payload: errors });
+			dispatch({
+				type: FETCH_USER_ERROR,
+				payload: { message: 'Invalid Data' },
+			});
 		});
 };
 

@@ -5,8 +5,8 @@
   "dependencies": {
     "@fontsource/roboto": "^4.5.8",
     "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
+    "jest": "^27.5.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.8.0",
@@ -25,7 +25,7 @@
     "eject": "react-scripts eject",
     "test:nowatch": "react-scripts test --watchAll=false",
     "prepare": "husky install",
-    "prepublish": "npm run eslint:fix",
+    "prepublish": "npm run eslint:fix && npm run test:nowatch",
     "eslint": "eslint --ext .js --ext .jsx src",
     "eslint:fix": "eslint --fix --ext .js --ext .jsx src"
   },
@@ -48,6 +48,7 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/react": "^14.0.0",
     "eslint": "^8.35.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^8.7.0",
@@ -56,6 +57,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "history": "^5.3.0",
     "husky": "^8.0.3",
     "prettier": "^2.8.4",
     "uuid": "^9.0.0"

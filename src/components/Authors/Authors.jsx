@@ -12,6 +12,7 @@ import { fetchAuthors } from '../../store/authors/thunk';
 import styles from './authors.module.css';
 
 const Authors = ({
+	className,
 	authorIds = [],
 	handleAuthor,
 	textButton,
@@ -27,24 +28,29 @@ const Authors = ({
 		dispatch(fetchAuthors);
 	}, [dispatch]);
 
-	if (authors.length === 0)
-		return <p className={styles.center}>{TEXT_AUTHORS_LIST_EMPTY}</p>;
+	const classNameList = [styles.list];
+
+	if (className) classNameList.push(className);
 
 	return (
-		<>
-			{authors.map(({ id, name }) => (
-				<div key={id} className={`${styles.flex} ${styles.author}`}>
-					<div className={styles.column}>
-						<p>{name}</p>
-					</div>
-					{handleAuthor && (
+		<div className={classNameList.join(' ')}>
+			{authors.length === 0 ? (
+				<p className={styles.center}>{TEXT_AUTHORS_LIST_EMPTY}</p>
+			) : (
+				authors.map(({ id, name }) => (
+					<div key={id} className={`${styles.flex} ${styles.author}`}>
 						<div className={styles.column}>
-							<Button text={textButton} onClick={() => handleAuthor(id)} />
+							<p>{name}</p>
 						</div>
-					)}
-				</div>
-			))}
-		</>
+						{handleAuthor && (
+							<div className={styles.column}>
+								<Button text={textButton} onClick={() => handleAuthor(id)} />
+							</div>
+						)}
+					</div>
+				))
+			)}
+		</div>
 	);
 };
 
