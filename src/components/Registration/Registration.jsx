@@ -1,46 +1,40 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+
+import { getIsAuth, getUserErrors } from '../../store/user/selectors';
+import { register } from '../../store/user/thunk';
 
 import Button from '../../common/Button/Button';
 import Input from '../../common/__Input/Input';
-import { AuthService } from '../../services';
-import { getIsAuth } from '../../store/user/selectors';
 import Errors from '../Errors/Errors';
 
 import styles from './registration.module.css';
 
 const Registration = () => {
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-	const [errors, setErrors] = useState([]);
 
 	const isAuth = useSelector(getIsAuth);
+	const errors = useSelector(getUserErrors);
 
 	useEffect(() => {
 		if (isAuth) navigate('/courses');
 	}, [isAuth, navigate]);
 
-	const fetchNewUser = async () => {
-		AuthService.register({
+	const handlerSubmit = async (e) => {
+		e.preventDefault();
+		const data = {
 			name,
 			email,
 			password,
-		}).then(({ successful, errors }) => {
-			if (successful) {
-				navigate('/login');
-			} else {
-				setErrors(errors.map((message) => ({ message })));
-			}
-		});
-	};
-
-	const handlerSubmit = async (e) => {
-		e.preventDefault();
-		fetchNewUser();
+			role: 'admin',
+		};
+		dispatch(register(data, () => navigate('/login')));
 	};
 
 	return (

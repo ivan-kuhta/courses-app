@@ -23,3 +23,7 @@
 .title {
   text-align: center;
 }
+
+.link {
+  width: fit-content;
+}

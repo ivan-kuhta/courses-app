@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getUser } from '../../store/user/selectors';
-import { addCourse } from '../../store/courses/actionCreators';
-
-import { CoursesServices } from '../../services';
+import { getToken } from '../../store/user/selectors';
+import {
+	addCourse,
+	fetchCourse,
+	updateCourse,
+} from '../../store/courses/thunk';
+import { getCourseById, getCoursesErrors } from '../../store/courses/selectors';
 
 import Button from '../../common/Button/Button';
 import Input from '../../common/__Input/Input';
@@ -18,6 +21,7 @@ import {
 	TEXT_CANCEL,
 	TEXT_CREATE_COURSE,
 	TEXT_REMOVE_AUTHOR,
+	TEXT_UPDATE_COURSE,
 } from '../../constants';
 
 import { pipeDuration } from '../../helpers/pipeDuration';
@@ -25,22 +29,22 @@ import { dateGeneratop } from '../../helpers/dateGeneratop';
 
 import styles from './create-course.module.css';
 
-const CreateCourse = () => {
+const CourseForm = () => {
+	const { id } = useParams();
+
+	const isEditing = Boolean(id);
+
+	const selectCourse = useSelector(getCourseById(id));
+
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
-	const [authorIds, setAuthorIds] = useState([]);
+	const token = useSelector(getToken);
 
-	const { isAuth } = useSelector(getUser);
-
-	const [errors, setErrors] = useState(null);
 	const [title, setTitle] = useState('');
 	const [description, setDescription] = useState('');
 	const [duration, setDuration] = useState(0);
-
-	useEffect(() => {
-		if (!isAuth) navigate('/');
-	}, [isAuth, navigate]);
+	const [authorIds, setAuthorIds] = useState([]);
 
 	const handleBack = () => navigate('/courses');
 
@@ -52,6 +56,8 @@ const CreateCourse = () => {
 		setAuthorIds(authorIds.filter((authorId) => authorId !== id));
 	};
 
+	const errors = useSelector(getCoursesErrors);
+
 	const handlerCreateCourse = () => {
 		const data = {
 			title,
@@ -61,15 +67,38 @@ const CreateCourse = () => {
 			creationDate: dateGeneratop(),
 		};
 
-		const resultValidation = CoursesServices.validation(data);
-
-		if (!Array.isArray(resultValidation)) {
-			dispatch(addCourse(data));
-			handleBack();
-		} else {
-			setErrors(resultValidation);
-		}
+		dispatch(
+			isEditing
+				? updateCourse(id, data, token, handleBack)
+				: addCourse(data, token, handleBack)
+		);
 	};
+
+	const setCourseValues = (course) => {
+		const { title, description, duration, authors } = course;
+		setTitle(title);
+		setDescription(description);
+		setDuration(duration);
+		setAuthorIds(authors);
+	};
+
+	useEffect(() => {
+		if (errors && errors.code === 404) navigate('/courses');
+	}, [errors, navigate]);
+
+	useEffect(() => {
+		if (id) {
+			if (selectCourse) {
+				setCourseValues(selectCourse);
+			} else {
+				dispatch(
+					fetchCourse(id, (data) => {
+						setCourseValues(data);
+					})
+				);
+			}
+		}
+	}, [id, selectCourse, dispatch]);
 
 	return (
 		<div className={styles.container}>
@@ -83,7 +112,10 @@ const CreateCourse = () => {
 					placeholdetText={'Enter title...'}
 					onChange={({ target: { value } }) => setTitle(value)}
 				/>
-				<Button text={TEXT_CREATE_COURSE} onClick={handlerCreateCourse} />
+				<Button
+					text={isEditing ? TEXT_UPDATE_COURSE : TEXT_CREATE_COURSE}
+					onClick={handlerCreateCourse}
+				/>
 				<Button
 					text={TEXT_CANCEL}
 					theme='danger'
@@ -141,4 +173,4 @@ const CreateCourse = () => {
 	);
 };
 
-export default CreateCourse;
+export default CourseForm;

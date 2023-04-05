@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { getIsAuth } from '../../store/user/selectors';
+import { getIsAdmin } from '../../store/user/selectors';
 import { getFilterCourses } from '../../store/courses/selectors';
+import { fetchCourses } from '../../store/courses/thunk';
+import { fetchAuthors } from '../../store/authors/thunk';
 
 import Button from '../../common/Button/Button';
 import CourseCard from './components/CourseCard/CourseCard';
@@ -17,27 +19,31 @@ import { transformDate } from '../../helpers/transformDate';
 import styles from './courses.module.css';
 
 const Courses = () => {
+	const dispatch = useDispatch();
 	const navigate = useNavigate();
+
+	const isAdmin = useSelector(getIsAdmin);
 
 	const [query, setQuery] = useState('');
 
 	const courses = useSelector(getFilterCourses(query));
 
-	const isAuth = useSelector(getIsAuth);
-
 	useEffect(() => {
-		if (!isAuth) navigate('/');
-	}, [isAuth, navigate]);
+		dispatch(fetchCourses);
+		dispatch(fetchAuthors);
+	}, [dispatch]);
 
 	return (
 		<div className={styles.container}>
 			<>
 				<header className={styles.header}>
 					<SearchBar handleSearch={(query) => setQuery(query)} />
-					<Button
-						text={TEXT_ADD_NEW_COURSE}
-						onClick={() => navigate('/courses/add')}
-					/>
+					{isAdmin && (
+						<Button
+							text={TEXT_ADD_NEW_COURSE}
+							onClick={() => navigate('/courses/add')}
+						/>
+					)}
 				</header>
 				<div className={styles.list}>
 					{courses.map(({ id, authors, duration, creationDate, ...course }) => (

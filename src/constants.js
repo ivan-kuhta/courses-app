@@ -4,6 +4,8 @@ export const TEXT_CANCEL = 'Cancel';
 
 export const TEXT_CREATE_COURSE = 'Create course';
 
+export const TEXT_UPDATE_COURSE = 'Update course';
+
 export const TEXT_CREATE_AUTHOR = 'Create author';
 
 export const TEXT_ADD_AUTHOR = 'Add author';
@@ -75,3 +77,4 @@ export const mockedAuthorsList = [
 ];
 
 export const URL_API = 'http://localhost:4000';
+export const TOKEN_NAME = '_token';

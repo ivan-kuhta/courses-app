@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { addAuthor } from '../../../../store/authors/actionCreators';
-
-import { AuthorsServices } from '../../../../services';
+import { getAuthorsErrors } from '../../../../store/authors/selectors';
+import { getToken } from '../../../../store/user/selectors';
+import { addAuthor } from '../../../../store/authors/thunk';
 
 import Button from '../../../../common/Button/Button';
 import Input from '../../../../common/__Input/Input';
@@ -16,20 +16,14 @@ const CreateAuthor = () => {
 	const dispatch = useDispatch();
 
 	const [author, setAuthor] = useState('');
-	const [errors, setErrors] = useState(null);
+
+	const errors = useSelector(getAuthorsErrors);
+	const token = useSelector(getToken);
 
 	const handleCreateAuthor = () => {
 		const data = { name: author };
 
-		const resultValidation = AuthorsServices.validation(data);
-
-		if (!Array.isArray(resultValidation)) {
-			dispatch(addAuthor(data));
-			setAuthor('');
-			setErrors(null);
-		} else {
-			setErrors(resultValidation);
-		}
+		dispatch(addAuthor(data, token, () => setAuthor('')));
 	};
 
 	return (

@@ -1,33 +1,52 @@
-import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
-import { getCourseById } from '../../store/courses/selectors';
-import { getUser } from '../../store/user/selectors';
+import { getCourseById, getCoursesErrors } from '../../store/courses/selectors';
+import { getAuthorsSelected } from '../../store/authors/selectors';
+import { fetchCourse } from '../../store/courses/thunk';
 
 import { pipeDuration } from '../../helpers/pipeDuration';
 import { transformDate } from '../../helpers/transformDate';
 
 import styles from './course-info.module.css';
-import { getAuthorsSelected } from '../../store/authors/selectors';
+import { fetchAuthors } from '../../store/authors/thunk';
 
 const CourseInfo = () => {
+	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const { id } = useParams();
 
-	const course = useSelector(getCourseById(id));
+	const selectCourse = useSelector(getCourseById(id));
+
+	const [course, setCourse] = useState(selectCourse);
 	const authors = useSelector(getAuthorsSelected(course?.authors || []));
-	const { isAuth } = useSelector(getUser);
+
+	const errors = useSelector(getCoursesErrors);
 
 	useEffect(() => {
-		if (!isAuth || !course) {
-			navigate('/courses');
+		if (errors && errors.code === 404) navigate('/courses');
+	}, [errors, navigate]);
+
+	useEffect(() => {
+		if (!selectCourse) {
+			dispatch(
+				fetchCourse(id, (course) => {
+					setCourse(course);
+				})
+			);
 		}
-	}, [isAuth, navigate, course]);
+	}, [id, dispatch, selectCourse]);
+
+	useEffect(() => {
+		dispatch(fetchAuthors);
+	}, [dispatch]);
 
 	return (
 		<div className={styles.container}>
-			<Link to='/courses'>{'< Back to courses'}</Link>
+			<Link className={styles.link} to='/courses'>
+				{'< Back to courses'}
+			</Link>
 			{course && (
 				<>
 					<h1 className={styles.title}>{course.title}</h1>

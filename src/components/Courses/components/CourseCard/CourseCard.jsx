@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { MdDeleteForever, MdModeEdit } from 'react-icons/md';
 
 import { getAuthorsSelected } from '../../../../store/authors/selectors';
-import { deleteCourse } from '../../../../store/courses/actionCreators';
 
 import Button from '../../../../common/Button/Button';
 
@@ -13,6 +12,8 @@ import { TEXT_SHOW_COURSE } from '../../../../constants';
 import { getNames } from '../../../../helpers/getNames';
 
 import styles from './course-card.module.css';
+import { getIsAdmin, getToken } from '../../../../store/user/selectors';
+import { deleteCourse } from '../../../../store/courses/thunk';
 
 const CourseCard = ({
 	id,
@@ -24,10 +25,15 @@ const CourseCard = ({
 }) => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
+
+	const token = useSelector(getToken);
+
 	authors = useSelector(getAuthorsSelected(authors));
 
+	const isAdmin = useSelector(getIsAdmin);
+
 	const handlerRemove = () => {
-		dispatch(deleteCourse(id));
+		dispatch(deleteCourse(id, token));
 	};
 
 	return (
@@ -51,12 +57,20 @@ const CourseCard = ({
 						text={TEXT_SHOW_COURSE}
 						onClick={() => navigate(`/courses/${id}`)}
 					/>
-					<Button
-						theme={'icon'}
-						text={<MdDeleteForever />}
-						onClick={handlerRemove}
-					></Button>
-					<Button theme={'icon'} text={<MdModeEdit />}></Button>
+					{isAdmin && (
+						<>
+							<Button
+								theme={'icon'}
+								text={<MdDeleteForever />}
+								onClick={handlerRemove}
+							/>
+							<Button
+								theme={'icon'}
+								onClick={() => navigate(`/courses/update/${id}`)}
+								text={<MdModeEdit />}
+							/>
+						</>
+					)}
 				</div>
 			</div>
 		</div>

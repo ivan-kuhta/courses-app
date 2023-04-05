@@ -1,5 +1,5 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Button from '../../common/Button/Button';
 import { TEXT_AUTHORS_LIST_EMPTY } from '../../constants';
@@ -7,6 +7,7 @@ import {
 	getAuthorsNotSelected,
 	getAuthorsSelected,
 } from '../../store/authors/selectors';
+import { fetchAuthors } from '../../store/authors/thunk';
 
 import styles from './authors.module.css';
 
@@ -16,9 +17,15 @@ const Authors = ({
 	textButton,
 	isMatched = true,
 }) => {
+	const dispatch = useDispatch();
+
 	const authors = useSelector(
 		isMatched ? getAuthorsSelected(authorIds) : getAuthorsNotSelected(authorIds)
 	);
+
+	useEffect(() => {
+		dispatch(fetchAuthors);
+	}, [dispatch]);
 
 	if (authors.length === 0)
 		return <p className={styles.center}>{TEXT_AUTHORS_LIST_EMPTY}</p>;
