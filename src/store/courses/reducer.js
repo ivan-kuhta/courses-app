@@ -8,7 +8,7 @@ import {
 	UPDATE_COURSE,
 } from './actionTypes';
 
-const initialState = {
+export const initialState = {
 	loading: false,
 	items: [],
 	errors: null,
